@@ -38,21 +38,21 @@
 	}
 
 	const firebaseConfig = {
-		databaseURL: import.meta.env.VITE_FBC_dbUrl,
-		apiKey: import.meta.env.VITE_FBC_apiKey,
-		authDomain: import.meta.env.VITE_FBC_authDomain,
-		projectId: import.meta.env.VITE_FBC_projectId,
-		storageBucket: import.meta.env.VITE_FBC_storageBucket,
-		messagingSenderId: import.meta.env.VITE_FBC_messagingSenderId,
-		appId: import.meta.env.VITE_FBC_appId,
-		measurementId: import.meta.env.VITE_FBC_measurementId
+		databaseURL: process.env.VITE_FBC_dbUrl,
+		apiKey: process.env.VITE_FBC_apiKey,
+		authDomain: process.env.VITE_FBC_authDomain,
+		projectId: process.env.VITE_FBC_projectId,
+		storageBucket: process.env.VITE_FBC_storageBucket,
+		messagingSenderId: process.env.VITE_FBC_messagingSenderId,
+		appId: process.env.VITE_FBC_appId,
+		measurementId: process.env.VITE_FBC_measurementId
 	}
 
 	const logParam = {
-		name: import.meta.env.VITE_CRED_fName,
-		ps: import.meta.env.VITE_CRED_fp,
-		mtk: import.meta.env.VITE_CRED_mTk,
-		gk: import.meta.env.VITE_CRED_gK
+		name: process.env.VITE_CRED_fName,
+		ps: process.env.VITE_CRED_fp,
+		mtk: process.env.VITE_CRED_mTk,
+		gk: process.env.VITE_CRED_gK
 	}
 
 	const store: IStore = reactive({
