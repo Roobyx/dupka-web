@@ -78,7 +78,7 @@
 		markers: [
 			{
 				position: {
-					lat: 51.093048, 
+					lat: 51.093048,
 					lng: 6.842120
 				},
 			}
@@ -107,8 +107,9 @@
 	const app = initializeApp(firebaseConfig)
 	const db = getFirestore(app)
 
-	const urlString = window.location
-	const reportId = urlString.toString().replace('http://localhost:3000/r:', '')
+	const currentUrl = window.location
+	const urlString = currentUrl.toString()
+	const reportId = urlString.match('[^r:]*$')[0]
 
 	const getReport = async () => {
 		try {
@@ -116,23 +117,22 @@
 			const user = JSON.parse(JSON.stringify(res.user))
 
 			if( user ) {
-				console.log('successfully logged user: ', res.user.email)
+				// console.log('successfully logged user: ', res.user.email)
 
 				// Get a list of cities from your database
 				const docRef = doc(db, "reports", reportId);
 				const docSnap = await getDoc(docRef);
 
 				if (docSnap.exists()) {
-					console.log("Document data:", docSnap.data());
 					// @ts-ignore
 					store.setReport(docSnap.data())
 					store.setReportReady()
 				} else {
-					console.log("No such document!");
+					// console.log("No such document!");
 				}
 			}
 		} catch (e: any) {
-				console.log('Got error while logging: ', e.message)
+				// console.log('Got error while logging: ', e.message)
 		}
 	}
 
@@ -148,7 +148,6 @@
 	<div class='report-container'
 		v-if="store.reportFetched"
 	>
-	
 		<picture class="photo-container">
 			<img class='report-image' :src="store.report.reportImage" alt="">
 		</picture>
@@ -205,6 +204,14 @@
 
 
 	</div>
+
+	<div class='index'
+		v-if="!store.reportFetched"
+	>
+		<h1> Welcome to Dupka! </h1>
+		<h2> More Info coming soon </h2>
+	</div>
+
 </template>
 
 <style scoped>
@@ -312,5 +319,12 @@
 	}
 	.icon-star {
 		fill:#fbbc04;
+	}
+	.index {
+		display: flex;
+		height: 100vh;
+		justify-content: center;
+		text-align: center;
+		flex-direction: column;
 	}
 </style>
