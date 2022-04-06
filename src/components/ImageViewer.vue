@@ -56,7 +56,8 @@
 	}
 
 	console.log('params: ', logParam)
-	
+	console.log('params: ', import.meta.env)
+
 	const store: IStore = reactive({
 		report: {
 			address: '',
