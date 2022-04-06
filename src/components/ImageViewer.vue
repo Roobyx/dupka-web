@@ -149,7 +149,6 @@
 	<div class='report-container'
 		v-if="store.reportFetched"
 	>
-	
 		<picture class="photo-container">
 			<img class='report-image' :src="store.report.reportImage" alt="">
 		</picture>
@@ -206,6 +205,14 @@
 
 
 	</div>
+
+	<div class='index'
+		v-if="!store.reportFetched"
+	>
+		<h1> Welcome to Dupka! </h1>
+		<h2> More Info coming soon </h2>
+	</div>
+
 </template>
 
 <style scoped>
@@ -313,5 +320,12 @@
 	}
 	.icon-star {
 		fill:#fbbc04;
+	}
+	.index {
+		display: flex;
+		height: 100vh;
+		justify-content: center;
+		text-align: center;
+		flex-direction: column;
 	}
 </style>
