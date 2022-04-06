@@ -109,7 +109,8 @@
 
 	const currentUrl = window.location
 	const urlString = currentUrl.toString()
-	const reportId = urlString.match('[^r:]*$')[0]
+	const regex = /(?<=r:)[\s\S]*/g;
+	const reportId = urlString.match(regex)[0]
 
 	const getReport = async () => {
 		try {
@@ -127,12 +128,13 @@
 					// @ts-ignore
 					store.setReport(docSnap.data())
 					store.setReportReady()
+					// console.log('report exists')
 				} else {
-					// console.log("No such document!");
+					console.log("No such document!");
 				}
 			}
 		} catch (e: any) {
-				// console.log('Got error while logging: ', e.message)
+				console.log('Got error while logging: ', e.message)
 		}
 	}
 
@@ -326,5 +328,19 @@
 		justify-content: center;
 		text-align: center;
 		flex-direction: column;
+	}
+	@media screen and (max-width: 991px) {
+		.map-container {
+			display: none;
+		}
+		.report-container {
+			height: auto;
+			display: block;
+			padding: 10px;
+		}
+		.report-info {
+			padding: 10px;
+			box-shadow: none;
+		}
 	}
 </style>
