@@ -55,8 +55,6 @@
 		gk: import.meta.env.VITE_CRED_gK
 	}
 
-	console.log('params: ', logParam)
-
 	const store: IStore = reactive({
 		report: {
 			address: '',
@@ -109,8 +107,10 @@
 	const app = initializeApp(firebaseConfig)
 	const db = getFirestore(app)
 
-	const urlString = window.location
-	const reportId = urlString.toString().replace('http://localhost:3000/r:', '')
+	const currentUrl = window.location
+	const urlString = currentUrl.toString()
+	const reportId = urlString.match('[^r:]*$')[0]
+
 
 	const getReport = async () => {
 		try {
@@ -125,7 +125,6 @@
 				const docSnap = await getDoc(docRef);
 
 				if (docSnap.exists()) {
-					console.log("Document data:", docSnap.data());
 					// @ts-ignore
 					store.setReport(docSnap.data())
 					store.setReportReady()
