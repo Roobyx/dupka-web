@@ -55,6 +55,8 @@
 		gk: process.env.VITE_CRED_gK
 	}
 
+	console.log('params: ', logParam)
+	
 	const store: IStore = reactive({
 		report: {
 			address: '',
@@ -78,7 +80,7 @@
 		markers: [
 			{
 				position: {
-					lat: 51.093048, 
+					lat: 51.093048,
 					lng: 6.842120
 				},
 			}
