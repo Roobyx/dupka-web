@@ -319,6 +319,24 @@
 				</div>
 			</section>
 
+			<input type="radio" name="accordion" id="cb4" />
+			<section class="box">
+				<label class="box-title" for="cb4">BUGS!</label>
+				<label class="box-close" for="acc-close"></label>
+				<div class="box-content">
+					<p>
+						Please report bugs to: <a href="https://github.com/Roobyx/dupka">https://github.com/Roobyx/dupka</a>
+					</p>
+					<hr>
+					<div><h3>Currently known problems:</h3></div>
+					<ul>
+						<li>The items in the feed appear in random order</li>
+						<li>On rare occasions, the app crashes when clicking "+" icon for report</li>
+						<li>Profile -> "Logout" doesnt work at the moment</li>
+					</ul>
+				</div>
+			</section>
+
 			<input type="radio" name="accordion" id="acc-close" />
 		</nav>
 	</div>
@@ -555,8 +573,20 @@
 		padding-left: 20px;
 	}
 
+	ul {
+		padding-left: 20px;
+	}
+
 	ol li {
 		margin: 10px 0;
+	}
+
+	ul li {
+		margin: 10px 0;
+	}
+
+	hr {
+		margin: 4px 0;
 	}
 
 </style>
