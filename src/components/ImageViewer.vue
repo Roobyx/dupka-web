@@ -110,31 +110,34 @@
 	const currentUrl = window.location
 	const urlString = currentUrl.toString()
 	const regex = /(?<=r:)[\s\S]*/g;
-	const reportId = urlString.match(regex)[0]
+	const idMatch = urlString.match(regex)
+	const reportId = idMatch ? idMatch[0] : null
 
 	const getReport = async () => {
-		try {
-			const res = await signInWithEmailAndPassword(getAuth(), logParam.name, logParam.ps)
-			const user = JSON.parse(JSON.stringify(res.user))
+		if (reportId) {
+			try {
+				const res = await signInWithEmailAndPassword(getAuth(), logParam.name, logParam.ps)
+				const user = JSON.parse(JSON.stringify(res.user))
 
-			if( user ) {
-				// console.log('successfully logged user: ', res.user.email)
+				if( user ) {
+					// console.log('successfully logged user: ', res.user.email)
 
-				// Get a list of cities from your database
-				const docRef = doc(db, "reports", reportId);
-				const docSnap = await getDoc(docRef);
+					// Get a list of cities from your database
+					const docRef = doc(db, "reports", reportId);
+					const docSnap = await getDoc(docRef);
 
-				if (docSnap.exists()) {
-					// @ts-ignore
-					store.setReport(docSnap.data())
-					store.setReportReady()
-					// console.log('report exists')
-				} else {
-					console.log("No such document!");
+					if (docSnap.exists()) {
+						// @ts-ignore
+						store.setReport(docSnap.data())
+						store.setReportReady()
+						// console.log('report exists')
+					} else {
+						console.log("No such document!");
+					}
 				}
+			} catch (e: any) {
+					console.log('Got error while logging: ', e.message)
 			}
-		} catch (e: any) {
-				console.log('Got error while logging: ', e.message)
 		}
 	}
 
@@ -210,8 +213,114 @@
 	<div class='index'
 		v-if="!store.reportFetched"
 	>
-		<h1> Welcome to Dupka! </h1>
-		<h2> More Info coming soon </h2>
+		<!-- <h1> Welcome to Dupka! </h1>
+		<hr>
+		<div>
+			<div>
+				<h2>About:</h2>
+			</div>
+			<p>
+				The idea of the app is to allow you to report immidiate infrastructure problems around you and in that way build an interactive map of the state of the country's infrastructural problems.
+			</p>
+			<hr>
+			<p>
+				The project started as a course work, but now I'd like to see where I can push its development to.
+			</p>
+		</div> -->
+
+		<nav class="accordion arrows">
+			<header class="box">
+				<label for="acc-close" class="box-title">Dupka app</label>
+			</header>
+
+			<input type="radio" name="accordion" id="cb1" />
+			<section class="box">
+				<label class="box-title" for="cb1">About</label>
+				<label class="box-close" for="acc-close"></label>
+				<div class="box-content">
+					<p>
+						The idea of the app is to allow you to report immidiate infrastructure problems around you and in that way build an interactive map of the state of the country's infrastructural problems.
+					</p>
+					<hr>
+					<p>
+						The project started as a course work, but now I'd like to see where I can push its development to.
+					</p>
+				</div>
+			</section>
+
+			<input type="radio" name="accordion" id="cb2" />
+			<section class="box">
+				<label class="box-title" for="cb2">Download & install</label>
+				<label class="box-close" for="acc-close"></label>
+				<div class="box-content">
+					<p>
+						The project currently consists of 2 parts - Mobile app and Web viewer.
+					</p>
+					<div>
+						<h3> To install the Android app </h3>
+					</div>
+
+					<ol>
+						<li>
+							From your phone, download the .apk from:  
+							<a href="https://u.pcloud.link/publink/show?code=XZTga5VZCdm0LE5BiFhHOmkoVrH6Yh1UpdXy"> here </a>.
+						</li>
+						<li>Click "Direct download" (the lighter button of the 2 below the icon)</li>
+						<li>Open the file and it will prompt for installation. (It may be needed to allow "Installing from unknown sources"</li>
+					</ol>
+				</div>
+			</section>
+
+			<input type="radio" name="accordion" id="cb3" />
+			<section class="box">
+				<label class="box-title" for="cb3">Usage</label>
+				<label class="box-close" for="acc-close"></label>
+				<div class="box-content">
+					<p>
+						<!-- The app is designed to use minimal personal information such as personal details or location data.
+						<br> -->
+						You can choose to log in anonymously - this bypasses the account creation.
+						<br>
+						or
+						<br>
+						you can register an account with username and password
+						<br>
+						<br>
+						<b>Note: <i>Currently there is no email verification or rest, so remember your password</i></b>
+					</p>
+					<p>
+						When you log in, you can scroll trough reports or use the <b>+</b> icon to start a new report.
+					</p>
+					<div>
+						<h3> Reporting </h3>
+					</div>
+					<div>
+						<ol>
+							<li>
+								When you spot something you want to report, like a hole in the road. Click the <b>+</b> icon, this will open your camera, take a photo and click "Save" if you like it.
+							</li>
+							<li>
+								Choose to take a photo or upload from files.
+							</li>
+							<li>
+								On the next page, just "rate" the severity of the problem you just took a photo of and press "Submit report".
+							</li>
+							<li>
+								You have created a report. You will be able to see it in the feed, onces its approved by the admin.
+							</li>
+							<li>
+								<b>
+									For admin access during the tests, please contact me. :)
+								</b>
+							</li>
+						</ol>
+					</div>
+
+				</div>
+			</section>
+
+			<input type="radio" name="accordion" id="acc-close" />
+		</nav>
 	</div>
 
 </template>
@@ -343,4 +452,111 @@
 			box-shadow: none;
 		}
 	}
+
+
+	.accordion {
+		margin: auto;
+		width: 400px;
+		text-align: left;
+	}
+	.accordion input {
+		display: none;
+	}
+	.box {
+		position: relative;
+		background: white;
+		height: 64px;
+		transition: all .15s ease-in-out;
+	}
+	.box::before {
+		content: '';
+		position: absolute;
+		display: block;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		pointer-events: none;
+		box-shadow: 0 -1px 0 #e5e5e5,0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);
+	}
+	header.box {
+		background: #00BCD4;
+		z-index: 100;
+		cursor: initial;
+		box-shadow: 0 -1px 0 #e5e5e5,0 0 2px -2px rgba(0,0,0,.12),0 2px 4px -4px rgba(0,0,0,.24);
+	}
+	header .box-title {
+		margin: 0;
+		font-weight: normal;
+		font-size: 16pt;
+		color: white;
+		cursor: initial;
+	}
+	.box-title {
+		width: calc(100% - 40px);
+		height: 64px;
+		line-height: 64px;
+		padding: 0 20px;
+		display: inline-block;
+		cursor: pointer;
+		-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;
+	}
+	.box-content {
+		width: calc(100% - 40px);
+		padding: 30px 20px;
+		font-size: 11pt;
+		color: rgba(0,0,0,.54);
+		display: none;
+	}
+	.box-close {
+		position: absolute;
+		height: 64px;
+		width: 100%;
+		top: 0;
+		left: 0;
+		cursor: pointer;
+		display: none;
+	}
+	input:checked + .box {
+		height: auto;
+		margin: 16px 0;
+		box-shadow: 0 0 6px rgba(0,0,0,.16),0 6px 12px rgba(0,0,0,.32);
+	}
+	input:checked + .box .box-title {
+		border-bottom: 1px solid rgba(0,0,0,.18);
+	}
+	input:checked + .box .box-content,
+	input:checked + .box .box-close {
+		display: inline-block;
+	}
+	.arrows section .box-title {
+		padding-left: 44px;
+		width: calc(100% - 64px);
+	}
+	.arrows section .box-title:before {
+		position: absolute;
+		display: block;
+		content: '\203a';
+		font-size: 18pt;
+		left: 20px;
+		top: -2px;
+		transition: transform .15s ease-in-out;
+		color: rgba(0,0,0,.54);
+	}
+	input:checked + section.box .box-title:before {
+		transform: rotate(90deg);
+	}
+
+	p {
+		margin: 10px 0;
+	}
+
+	ol {
+		padding-left: 20px;
+	}
+
+	ol li {
+		margin: 10px 0;
+	}
+
 </style>
